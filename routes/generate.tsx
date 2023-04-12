@@ -37,24 +37,24 @@ export const handler: Handlers<Completion | null> = {
       // stop: "\n",
     }
 
-    const response:Completion = await openai.completion(parameters)(app)
+    const response: Completion = await openai.completion(parameters)(app)
 
     if (!response) {
       return ctx.render(null);
     }
 
-    const data :Data = {response, parameters}
-    
+    const data: Data = {response, parameters}
+
     return ctx.render(data);
   },
 };
 
 export default function generate({data}: PageProps<Data>) {
-  const {response, parameters} = data ? data : {response: null, parameters:null};
+  const {response, parameters} = data ? data : {response: null, parameters: null};
   console.log(response);
   console.log(parameters);
-  
-  
+
+
   return (
     <>
       <Head>
@@ -63,9 +63,9 @@ export default function generate({data}: PageProps<Data>) {
       <div class="p-4 flex flex-col columns-1 justify-center h-screen w-screen place-content-center content-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
         <div class="self-center">
           <img
-            src="/logo.svg"
-            class="w-48 h-48 self-center m-8"
-            alt="the fresh logo: a sliced lemon dripping with juice"
+            src="/pokelogo.svg"
+            class="w-72 self-center m-20"
+            alt="pokemon logo"
           />
           <form>
             <label class="block">
@@ -82,20 +82,28 @@ export default function generate({data}: PageProps<Data>) {
         </div>
         <div class="m-8 max-w-prose self-center text-white bg-slate space-y-4">
           <h1>
-            <em>Prompt:</em> {parameters?.prompt}
+            {parameters ?
+              <>
+                <em>Prompt: </em> {parameters.prompt}
+              </>
+              : ""}
           </h1>
           <h2>
-            <em>Text:</em> {response?.choices[0].text}
+            {response ?
+              <>
+                <em>Generated description : </em> {response.choices[0].text}
+              </>
+              : ""}
           </h2>
         </div>
 
-     </div>
-        <div class="fixed bottom-0 right-0 m-8">
-          <a href="https://fresh.deno.dev">
-            <img width="197" height="37" src="https://fresh.deno.dev/fresh-badge-dark.svg" alt="Made with Fresh" />
-          </a>
-        </div>
- 
+      </div>
+      <div class="fixed bottom-0 right-0 m-8">
+        <a href="https://fresh.deno.dev">
+          <img width="197" height="37" src="https://fresh.deno.dev/fresh-badge-dark.svg" alt="Made with Fresh" />
+        </a>
+      </div>
+
     </>
   );
 }
